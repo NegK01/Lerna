@@ -4,7 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,12 +17,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.negk.lerna.ui.components.BaseCard
 
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Surface
-import com.negk.lerna.ui.components.BaseHomeCard
+
 
 /**
  * DailyProgramCard
@@ -50,7 +47,7 @@ fun DailyProgramCard(
 	buttonText: String = "Jugar",
 	onButtonClick: () -> Unit = {}
 ) {
-	BaseHomeCard(
+	BaseCard(
 		modifier = modifier.height(height),
 		backgroundColor = MaterialTheme.colorScheme.primaryContainer
 	) {
@@ -105,24 +102,6 @@ fun DailyProgramCard(
 			) {
 				Text(buttonText, style = MaterialTheme.typography.titleMedium)
 			}
-		}
-	}
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DailyProgramCardPreview() {
-	MaterialTheme {
-		Surface(modifier = Modifier.padding(16.dp)) {
-			DailyProgramCard(
-				height = 220.dp,
-				title = "Memory Matrix",
-				description = "Entrena tu memoria recordando patrones",
-				imageResource = R.drawable.memory_matrix,
-				imageSize = 100.dp,
-				buttonText = "Jugar",
-				onButtonClick = { /* Acción de prueba */ }
-			)
 		}
 	}
 }

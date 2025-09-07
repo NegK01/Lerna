@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
  * @param content Contenido de la tarjeta
  */
 @Composable
-fun BaseHomeCard(
+fun BaseCard(
 	modifier: Modifier = Modifier,
 	cornerRadius: Dp = 24.dp,
 	backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,

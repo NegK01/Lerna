@@ -2,7 +2,7 @@ package com.negk.lerna.ui.screens.home.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -11,11 +11,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.ui.tooling.preview.Preview
-import com.negk.lerna.ui.components.BaseHomeCard
+import com.negk.lerna.ui.components.BaseCard
 
 @Composable
 fun RecommendedGameCard(
@@ -26,7 +23,7 @@ fun RecommendedGameCard(
     buttonText: String = "Jugar",
     onButtonClick: () -> Unit = {}
 ) {
-    BaseHomeCard(
+    BaseCard(
         modifier = modifier.height(height),
         backgroundColor = MaterialTheme.colorScheme.primaryContainer
     ) {
@@ -89,22 +86,6 @@ fun RecommendedGameCard(
 //            ) {
 //                Text(buttonText, style = MaterialTheme.typography.titleMedium)
 //            }
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RecommendedGameCardPreview() {
-    MaterialTheme {
-        Surface(modifier = Modifier.padding(16.dp)) {
-            RecommendedGameCard(
-                height = 100.dp,
-                title = "Memory Matrix",
-                description = "Entrena tu memoria recordando patrones",
-                buttonText = "Jugar",
-                onButtonClick = { /* Acción de prueba */ }
-            )
         }
     }
 }
