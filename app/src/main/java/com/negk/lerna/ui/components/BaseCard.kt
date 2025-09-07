@@ -1,6 +1,5 @@
-package com.negk.lerna.ui.components.home
+package com.negk.lerna.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,6 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -24,10 +24,10 @@ import androidx.compose.ui.unit.dp
  * @param content Contenido de la tarjeta
  */
 @Composable
-fun BaseHomeCard(
+fun BaseCard(
 	modifier: Modifier = Modifier,
 	cornerRadius: Dp = 24.dp,
-	backgroundColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.surfaceVariant,
+	backgroundColor: Color = MaterialTheme.colorScheme.surfaceVariant,
 	elevation: Dp = 4.dp,
 	content: @Composable () -> Unit
 ) {
