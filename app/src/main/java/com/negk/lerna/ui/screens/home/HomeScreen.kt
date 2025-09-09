@@ -26,14 +26,15 @@ fun HomeScreen(navController: NavController) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
             text = "Programa del día",
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
         )
 
         Spacer(modifier = Modifier.height(15.dp))
 
         // Tarjeta destacada del programa del día
         DailyProgramCard(
-            height = 200.dp,
+            height = 120.dp,
             title = "Memory Matrix",
             description = "Entrena tu memoria recordando patrones",
             imageResource = R.drawable.memory_matrix,
@@ -46,7 +47,8 @@ fun HomeScreen(navController: NavController) {
 
         Text(
             text = "Juegos recomendados",
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
         )
 
         Spacer(modifier = Modifier.height(15.dp))
@@ -54,8 +56,14 @@ fun HomeScreen(navController: NavController) {
         RecommendedGameCard(
             height = 100.dp,
             title = "Memory Matrix",
-            description = "Entrena tu memoria recordando patrones",
-            buttonText = "Jugar",
+            onButtonClick = { /* Acción de prueba */ }
+        )
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        RecommendedGameCard(
+            height = 100.dp,
+            title = "Memory Matrix",
             onButtonClick = { /* Acción de prueba */ }
         )
     }

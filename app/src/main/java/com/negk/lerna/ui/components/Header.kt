@@ -30,7 +30,8 @@ fun Header(
             Text(
                 text = "Lerna",
                 style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Start
+                textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onBackground,
             )
         },
         actions = {
