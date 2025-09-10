@@ -32,7 +32,7 @@ fun RecommendedGameCard(
     BaseCard(
         modifier = modifier
             .height(height)
-            .clickable(onClick = onButtonClick), // Toda la card es clickeable
+            .clickable(onClick = onButtonClick),
         backgroundColor = MaterialTheme.colorScheme.surface
     ) {
         Column(
@@ -45,7 +45,6 @@ fun RecommendedGameCard(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                // Columna de texto a la izquierda
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.Center
@@ -57,13 +56,11 @@ fun RecommendedGameCard(
                     )
                     Text(
                         text = description,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.surfaceBright,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Start
                     )
                 }
-
-                // Imagen a la derecha
                 Image(
                     painter = painterResource(id = imageResource),
                     contentDescription = null,

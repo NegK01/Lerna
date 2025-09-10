@@ -62,7 +62,6 @@ fun DailyProgramCard(
 				modifier = Modifier.weight(1f).fillMaxWidth(),
 				verticalAlignment = Alignment.CenterVertically,
 			) {
-				// Columna de texto a la izquierda
 				Column(
 					modifier = Modifier.weight(1f),
 					verticalArrangement = Arrangement.Center
@@ -76,11 +75,10 @@ fun DailyProgramCard(
 					Text(
 						text = description,
 						style = MaterialTheme.typography.bodyMedium,
-						color = MaterialTheme.colorScheme.surfaceBright,
+						color = MaterialTheme.colorScheme.onSurfaceVariant,
 						textAlign = TextAlign.Start
 					)
 				}
-				// Imagen a la derecha
 				Image(
 					painter = painterResource(id = imageResource),
 					contentDescription = null,
