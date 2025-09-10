@@ -1,9 +1,9 @@
 package com.negk.lerna.ui.screens.home.components
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Icon
-import androidx.compose.material.icons.Icons
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -11,8 +11,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
+import com.negk.lerna.R
 import com.negk.lerna.ui.components.BaseCard
+import com.negk.lerna.ui.screens.home.HomeScreen
 
 @Composable
 fun RecommendedGameCard(
@@ -20,22 +25,26 @@ fun RecommendedGameCard(
     height: Dp = 200.dp,
     title: String = "Titulo",
     description: String = "Descripcion",
-    buttonText: String = "Jugar",
+    imageResource: Int = R.drawable.memory_matrix,
+    imageSize: Dp = 150.dp,
     onButtonClick: () -> Unit = {}
 ) {
     BaseCard(
-        modifier = modifier.height(height),
-        backgroundColor = MaterialTheme.colorScheme.primaryContainer
+        modifier = modifier
+            .height(height)
+            .clickable(onClick = onButtonClick),
+        backgroundColor = MaterialTheme.colorScheme.surface
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
-                modifier = Modifier.weight(1f).fillMaxWidth(),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                // Columna de texto a la izquierda
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.Center
@@ -43,49 +52,34 @@ fun RecommendedGameCard(
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        color = MaterialTheme.colorScheme.onSurface
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = description,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Start
                     )
                 }
-                // Imagen a la derecha
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .padding(start = 20.dp, top = 8.dp)
-                )
-                /*Image(
+                Image(
                     painter = painterResource(id = imageResource),
                     contentDescription = null,
                     modifier = Modifier
                         .size(imageSize)
                         .weight(1f)
-                        .padding(start = 20.dp, top = 8.dp)
-                )*/
+                        .padding(start = 50.dp)
+                )
             }
-            Spacer(modifier = Modifier.height(12.dp))
-            // Botón de acción abajo, ocupa todo el ancho
-//            val interactionSource = remember { MutableInteractionSource() }
-//            Button(
-//                onClick = onButtonClick,
-//                modifier = Modifier.fillMaxWidth(),
-//                interactionSource = interactionSource,
-//                shape = RoundedCornerShape(12.dp),
-//                colors = ButtonDefaults.buttonColors(
-//                    containerColor = MaterialTheme.colorScheme.primary,
-//                    contentColor = MaterialTheme.colorScheme.onSecondary
-//                )
-//            ) {
-//                Text(buttonText, style = MaterialTheme.typography.titleMedium)
-//            }
         }
     }
+}
+@Preview(showBackground = true)
+@Composable
+fun RecommendedGameCardPreview() {
+    RecommendedGameCard(
+        title = "Juego recomendado",
+        description = "Pon a prueba tu memoria con este divertido reto.",
+        imageResource = R.drawable.memory_matrix,
+        onButtonClick = { /* Acción de prueba */ }
+    )
 }

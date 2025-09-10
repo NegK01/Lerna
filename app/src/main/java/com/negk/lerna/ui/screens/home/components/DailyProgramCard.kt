@@ -2,6 +2,7 @@ package com.negk.lerna.ui.screens.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
@@ -48,8 +49,10 @@ fun DailyProgramCard(
 	onButtonClick: () -> Unit = {}
 ) {
 	BaseCard(
-		modifier = modifier.height(height),
-		backgroundColor = MaterialTheme.colorScheme.primaryContainer
+		modifier = modifier
+			.height(height)
+			.clickable(onClick = onButtonClick),
+		backgroundColor = MaterialTheme.colorScheme.surface
 	) {
 		Column(
 			modifier = Modifier.fillMaxSize(),
@@ -59,7 +62,6 @@ fun DailyProgramCard(
 				modifier = Modifier.weight(1f).fillMaxWidth(),
 				verticalAlignment = Alignment.CenterVertically,
 			) {
-				// Columna de texto a la izquierda
 				Column(
 					modifier = Modifier.weight(1f),
 					verticalArrangement = Arrangement.Center
@@ -67,17 +69,16 @@ fun DailyProgramCard(
 					Text(
 						text = title,
 						style = MaterialTheme.typography.titleLarge,
-						color = MaterialTheme.colorScheme.onPrimaryContainer
+						color = MaterialTheme.colorScheme.onSurface
 					)
 					Spacer(modifier = Modifier.height(8.dp))
 					Text(
 						text = description,
 						style = MaterialTheme.typography.bodyMedium,
-						color = MaterialTheme.colorScheme.onPrimaryContainer,
+						color = MaterialTheme.colorScheme.onSurfaceVariant,
 						textAlign = TextAlign.Start
 					)
 				}
-				// Imagen a la derecha
 				Image(
 					painter = painterResource(id = imageResource),
 					contentDescription = null,
@@ -86,21 +87,6 @@ fun DailyProgramCard(
 						.weight(1f)
 						.padding(start = 20.dp, top = 8.dp)
 				)
-			}
-			Spacer(modifier = Modifier.height(12.dp))
-			// Botón de acción abajo, ocupa todo el ancho
-			val interactionSource = remember { MutableInteractionSource() }
-			Button(
-				onClick = onButtonClick,
-				modifier = Modifier.fillMaxWidth(),
-				interactionSource = interactionSource,
-				shape = RoundedCornerShape(12.dp),
-				colors = ButtonDefaults.buttonColors(
-					containerColor = MaterialTheme.colorScheme.primary,
-					contentColor = MaterialTheme.colorScheme.onSecondary
-				)
-			) {
-				Text(buttonText, style = MaterialTheme.typography.titleMedium)
 			}
 		}
 	}

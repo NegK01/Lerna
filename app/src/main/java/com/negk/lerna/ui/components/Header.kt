@@ -30,26 +30,29 @@ fun Header(
             Text(
                 text = "Lerna",
                 style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Start
+                textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onBackground,
             )
         },
         actions = {
             IconButton(onClick = onStreakClick) {
                 Icon(
                     imageVector = Icons.Default.Favorite,
-                    contentDescription = "Racha"
+                    contentDescription = "Racha",
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
             IconButton(onClick = onNotificationClick) {
                 Icon(
                     imageVector = Icons.Default.Notifications,
-                    contentDescription = "Notificaciones"
+                    contentDescription = "Notificaciones",
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         },
         modifier = modifier,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.background
         )
     )
 }
