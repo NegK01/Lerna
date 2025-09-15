@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Lerna</string>
-    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_pre_game">PreGameActivity</string>
+    <string name="title_activity_game">GameActivity</string>
 </resources>

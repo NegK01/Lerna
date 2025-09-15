@@ -1,11 +1,8 @@
 package com.negk.lerna.ui.screens.home.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,13 +11,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.negk.lerna.R
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import com.negk.lerna.ui.components.BaseCard
-
-
+import androidx.compose.ui.platform.LocalContext
+import com.negk.lerna.data.GameRepository
+import com.negk.lerna.data.gameDrawableMap
 
 /**
  * DailyProgramCard
@@ -41,13 +38,17 @@ import com.negk.lerna.ui.components.BaseCard
 fun DailyProgramCard(
 	modifier: Modifier = Modifier,
 	height: Dp = 200.dp,
-	title: String = "Titulo",
-	description: String = "Descripcion",
-	imageResource: Int = R.drawable.memory_matrix,
+	gameId: String? = null,
 	imageSize: Dp = 80.dp,
 	buttonText: String = "Jugar",
 	onButtonClick: () -> Unit = {}
 ) {
+	val context = LocalContext.current
+	// 1. Obtener datos del juego si se pasa gameId
+	val game = remember(gameId) {
+		gameId?.let { GameRepository.getGameById(context, it) }
+	}
+
 	BaseCard(
 		modifier = modifier
 			.height(height)
@@ -66,22 +67,27 @@ fun DailyProgramCard(
 					modifier = Modifier.weight(1f),
 					verticalArrangement = Arrangement.Center
 				) {
+					// 2. Mostrar título y descripción desde game o fallback
 					Text(
-						text = title,
+						text = game?.title ?: "Titulo",
 						style = MaterialTheme.typography.titleLarge,
 						color = MaterialTheme.colorScheme.onSurface
 					)
 					Spacer(modifier = Modifier.height(8.dp))
 					Text(
-						text = description,
+						text = game?.description ?: "Descripcion",
 						style = MaterialTheme.typography.bodyMedium,
 						color = MaterialTheme.colorScheme.onSurfaceVariant,
 						textAlign = TextAlign.Start
 					)
 				}
+				// 3. Imagen desde gameId
+				val imageRes = game?.id?.let { id ->
+					gameDrawableMap[id]
+				} ?: R.drawable.memory_matrix // Recurso por defecto si no se encuentra
 				Image(
-					painter = painterResource(id = imageResource),
-					contentDescription = null,
+					painter = painterResource(id = imageRes),
+					contentDescription = game?.title ?: "Juego",
 					modifier = Modifier
 						.size(imageSize)
 						.weight(1f)
