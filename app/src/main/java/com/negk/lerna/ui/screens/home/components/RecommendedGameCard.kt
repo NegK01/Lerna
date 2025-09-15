@@ -18,17 +18,36 @@ import androidx.navigation.compose.rememberNavController
 import com.negk.lerna.R
 import com.negk.lerna.ui.components.BaseCard
 import com.negk.lerna.ui.screens.home.HomeScreen
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.runtime.remember
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import com.negk.lerna.ui.components.BaseCard
+import androidx.compose.ui.platform.LocalContext
+import com.negk.lerna.data.GameRepository
+import com.negk.lerna.data.gameDrawableMap
 
 @Composable
 fun RecommendedGameCard(
     modifier: Modifier = Modifier,
     height: Dp = 200.dp,
-    title: String = "Titulo",
-    description: String = "Descripcion",
-    imageResource: Int = R.drawable.memory_matrix,
+    gameId: String? = null,
     imageSize: Dp = 150.dp,
     onButtonClick: () -> Unit = {}
 ) {
+    val context = LocalContext.current
+    // 1. Obtener datos del juego si se pasa gameId
+    val game = remember(gameId) {
+        gameId?.let { GameRepository.getGameById(context, it) }
+    }
+
     BaseCard(
         modifier = modifier
             .height(height)
@@ -49,20 +68,25 @@ fun RecommendedGameCard(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.Center
                 ) {
+                    // 2. Mostrar título y descripción desde game o fallback
                     Text(
-                        text = title,
+                        text = game?.title ?: "Titulo",
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = description,
+                        text = game?.description ?: "Descripcion",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Start
                     )
                 }
+                // 3. Imagen desde gameId
+                val imageRes = game?.id?.let { id ->
+                    gameDrawableMap[id]
+                } ?: R.drawable.memory_matrix // Recurso por defecto si no se encuentra
                 Image(
-                    painter = painterResource(id = imageResource),
+                    painter = painterResource(id = imageRes),
                     contentDescription = null,
                     modifier = Modifier
                         .size(imageSize)
@@ -72,14 +96,4 @@ fun RecommendedGameCard(
             }
         }
     }
-}
-@Preview(showBackground = true)
-@Composable
-fun RecommendedGameCardPreview() {
-    RecommendedGameCard(
-        title = "Juego recomendado",
-        description = "Pon a prueba tu memoria con este divertido reto.",
-        imageResource = R.drawable.memory_matrix,
-        onButtonClick = { /* Acción de prueba */ }
-    )
 }

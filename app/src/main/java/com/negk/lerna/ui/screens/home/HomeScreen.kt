@@ -11,20 +11,18 @@ import androidx.compose.material3.Text
 import com.negk.lerna.ui.screens.home.components.DailyProgramCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.negk.lerna.R
-import androidx.navigation.compose.rememberNavController
 import com.negk.lerna.ui.screens.home.components.RecommendedGameCard
+import android.content.Intent
+import androidx.compose.ui.platform.LocalContext
+import com.negk.lerna.PreGameActivity
 
-/**
- * HomeScreen
- * Pantalla principal que muestra el 'Programa del día'.
- * Aquí se pueden agregar secciones como juegos recomendados, test, etc.
- */
 @Composable
 fun HomeScreen(navController: NavController) {
+    val context = LocalContext.current // 1. Obtener contexto
+
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -37,12 +35,15 @@ fun HomeScreen(navController: NavController) {
         // Tarjeta destacada del programa del día
         DailyProgramCard(
             height = 120.dp,
-            title = "Memory Matrix",
-            description = "Entrena tu memoria recordando patrones",
-            imageResource = R.drawable.memory_matrix,
+            gameId = "memory_matrix", // ID del juego destacado
             imageSize = 100.dp,
             buttonText = "Jugar",
-            onButtonClick = { navController.navigate("games") }
+            onButtonClick = {
+                // 2. Crear Intent y pasar gameId
+                val intent = Intent(context, PreGameActivity::class.java)
+                intent.putExtra("gameId", "memory_matrix") // Aquí el id real del juego
+                context.startActivity(intent) // 3. Abrir PreGameActivity
+            }
         )
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -55,25 +56,27 @@ fun HomeScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(15.dp))
 
+        // Ejemplo de juego recomendado
         RecommendedGameCard(
             height = 100.dp,
-            title = "Memory Matrix",
-            onButtonClick = { /* Acción de prueba */ }
+            gameId = "memory_matrix",
+            onButtonClick = {
+                val intent = Intent(context, PreGameActivity::class.java)
+                intent.putExtra("gameId", "memory_matrix") // id del juego
+                context.startActivity(intent)
+            }
         )
 
         Spacer(modifier = Modifier.height(15.dp))
 
         RecommendedGameCard(
             height = 100.dp,
-            title = "Memory Matrix",
-            onButtonClick = { /* Acción de prueba */ }
+            gameId = "speed_match",
+            onButtonClick = {
+                val intent = Intent(context, PreGameActivity::class.java)
+                intent.putExtra("gameId", "speed_match")
+                context.startActivity(intent)
+            }
         )
-    }
-}
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    MaterialTheme {
-        HomeScreen(navController = rememberNavController())
     }
 }

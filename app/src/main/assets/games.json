@@ -1,0 +1,18 @@
+[
+    {
+        "id": "memory_matrix",
+        "title": "Memory Matrix",
+        "description": "Entrena tu memoria recordando patrones",
+        "cognitiveArea": "Memoria",
+        "instructions": "Recuerda la secuencia de cuadros que se iluminen.",
+        "hasLevels": true
+    },
+    {
+        "id": "speed_match",
+        "title": "Speed Match",
+        "description": "Mejora tu velocidad de procesamiento",
+        "cognitiveArea": "Velocidad",
+        "instructions": "Presiona si la figura coincide con la anterior.",
+        "hasLevels": false
+    }
+]
