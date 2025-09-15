@@ -1,5 +1,6 @@
 package com.negk.lerna.ui.game
 
+import android.text.style.BackgroundColorSpan
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -33,14 +34,16 @@ fun GameHUDBase(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Salir123")
+            Button(onClick = onExitClick) {
+                Text(text = "Salir")
+            }
 
             Spacer(modifier = Modifier.height(20.dp))
 
             // Contenido principal del juego
             gameContent()
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(5.dp))
 
             // Barra de progreso / HUD superior
             Row(
@@ -51,9 +54,6 @@ fun GameHUDBase(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = "Nivel ${(levelProgress * 100).toInt()}%", style = MaterialTheme.typography.titleMedium)
-                Button(onClick = onExitClick) {
-                    Text(text = "Salir")
-                }
             }
         }
 
