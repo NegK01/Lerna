@@ -6,7 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.negk.lerna.ui.game.GameHUDBase
+import com.negk.lerna.ui.game.GameHUD
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.background
 import androidx.compose.ui.graphics.Color
@@ -16,7 +16,7 @@ fun MemoryMatrixGame(viewModel: MemoryMatrixViewModel = viewModel()) {
     val score by viewModel.score.collectAsState()
     val showLevelComplete by viewModel.levelComplete.collectAsState()
 
-    GameHUDBase(
+    GameHUD(
         gameContent = {
             Column(
                 modifier = Modifier

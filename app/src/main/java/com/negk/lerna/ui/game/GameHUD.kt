@@ -1,6 +1,5 @@
 package com.negk.lerna.ui.game
 
-import android.text.style.BackgroundColorSpan
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,7 +22,7 @@ import androidx.compose.material3.LinearProgressIndicator
  * - botones de salir o menú
  */
 @Composable
-fun GameHUDBase(
+fun GameHUD(
     gameContent: @Composable () -> Unit,
     showLevelComplete: Boolean = false,
     onDismissLevelComplete: () -> Unit = {},
