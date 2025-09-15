@@ -8,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.negk.lerna.ui.game.GameHUDBase
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.foundation.background
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun MemoryMatrixGame(viewModel: MemoryMatrixViewModel = viewModel()) {
@@ -19,7 +21,8 @@ fun MemoryMatrixGame(viewModel: MemoryMatrixViewModel = viewModel()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .background(Color.Green.copy(alpha = 0.1f)), // Prueba, ver area de juego real
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(text = "Puntaje: $score")
@@ -31,6 +34,7 @@ fun MemoryMatrixGame(viewModel: MemoryMatrixViewModel = viewModel()) {
         showLevelComplete = showLevelComplete,
         onDismissLevelComplete = { viewModel.dismissLevelComplete() },
         levelProgress = score / 5f,
-        onExitClick = { /* acción de salir */ }
+        onExitClick = { /* acción de salir */ },
     )
 }
+
