@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.LinearProgressIndicator
 
 /**
  * GameHUDBase es la estructura base de cualquier juego.
@@ -31,30 +32,35 @@ fun GameHUDBase(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Red.copy(alpha = 0.1f)), // Prueba, ver area de HUD real
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(onClick = onExitClick) {
-                Text(text = "Salir")
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Contenido principal del juego
-            gameContent()
-
-            Spacer(modifier = Modifier.height(5.dp))
-
             // Barra de progreso / HUD superior
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .background(Color.Yellow.copy(alpha = 0.1f)) // Prueba, ver area de HUD real
                     .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Nivel ${(levelProgress * 100).toInt()}%", style = MaterialTheme.typography.titleMedium)
+                Button(onClick = onExitClick) {
+                    Text(text = "X")
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                LinearProgressIndicator(
+                    progress = { levelProgress }, // usar mi Float (0f..1f)
+                    modifier = Modifier
+                        .weight(1f) // que se expanda
+                        .height(8.dp), // grosor de la barra
+                )
             }
+
+            // Contenido principal del juego
+            gameContent()
         }
 
         // Overlay modal nivel completado (encima de todo)
