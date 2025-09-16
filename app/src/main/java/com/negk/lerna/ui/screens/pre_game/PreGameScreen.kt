@@ -10,6 +10,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.negk.lerna.R
@@ -37,11 +39,19 @@ fun PreGameScreen(game: Game, modifier: Modifier = Modifier, onPlayClick: () -> 
                 .height(180.dp)
         )
 
-        Text(text = game.title, style = MaterialTheme.typography.titleLarge)
+        Text(
+            text = game.title,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.semantics { heading() }
+        )
         Text(text = game.description, style = MaterialTheme.typography.bodyMedium)
 
         if (game.hasLevels) {
-            Text(text = "Niveles", style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = "Niveles",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.semantics { heading() }
+            )
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(game.levels) { level ->
                     Button(onClick = { /* Seleccionar nivel */ }) {
@@ -51,7 +61,7 @@ fun PreGameScreen(game: Game, modifier: Modifier = Modifier, onPlayClick: () -> 
             }
         }
 
-        Text(text = "Dificultad: ${game.difficulty}", fontSize = 14.sp)
+        Text(text = "Dificultad: ${game.difficulty}", style = MaterialTheme.typography.bodyMedium)
 
         Button(
             onClick = onPlayClick,
