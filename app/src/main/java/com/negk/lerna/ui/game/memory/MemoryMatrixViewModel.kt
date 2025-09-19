@@ -1,36 +1,34 @@
 package com.negk.lerna.ui.game.memory
 
-import android.app.Application
-import android.content.Context
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.negk.lerna.data.GameRepository
+import com.negk.lerna.data.Graph
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlin.random.Random
-import androidx.core.content.edit
 
 /**
  * ViewModel para el juego Memory Matrix.
  * Maneja el estado del juego, incluyendo secuencia lineal, progreso y lógica de juego.
  */
-class MemoryMatrixViewModel(application: Application) : AndroidViewModel(application) {
+class MemoryMatrixViewModel(
+    private val gameRepository: GameRepository = Graph.gameRepository
+) : ViewModel() {
     companion object {
-        private const val KEY_SEQUENCE = "sequence"
         private const val CELL_LIT_DURATION_MS = 1000L
         private const val PAUSE_BETWEEN_CELLS_MS = 500L
         const val WIN_SEQUENCE_COUNT = 100
     }
-
-    private val prefs = application.getSharedPreferences("MemoryMatrix", Context.MODE_PRIVATE)
 
     // Tamaño de la rejilla (fijo en 3x3 para simplicidad)
     private val _gridSize = MutableStateFlow(3)
     val gridSize: StateFlow<Int> = _gridSize
 
     // Secuencia actual a recordar (persistida)
-    private val _sequence = MutableStateFlow<List<Int>>(loadSequence())
+    private val _sequence = MutableStateFlow<List<Int>>(emptyList())
     val sequence: StateFlow<List<Int>> = _sequence
 
     // Indica si se está mostrando la secuencia actualmente
@@ -60,18 +58,11 @@ class MemoryMatrixViewModel(application: Application) : AndroidViewModel(applica
     private val _showAchieved = MutableStateFlow(false)
     val showAchieved: StateFlow<Boolean> = _showAchieved
 
-    private fun loadSequence(): List<Int> {
-        val sequenceString = prefs.getString(KEY_SEQUENCE, "") ?: ""
-        return if (sequenceString.isNotEmpty()) {
-            sequenceString.split(",").mapNotNull { it.toIntOrNull() }
-        } else {
-            emptyList()
+    init {
+        viewModelScope.launch {
+            _sequence.value = gameRepository.loadMemoryMatrixSequence()
+            _sequenceCount.value = if (_sequence.value.isNotEmpty()) _sequence.value.size - 1 else 0
         }
-    }
-
-    private fun saveSequence(sequence: List<Int>) {
-        val sequenceString = sequence.joinToString(",")
-        prefs.edit { putString(KEY_SEQUENCE, sequenceString) }
     }
 
     /**
@@ -83,7 +74,9 @@ class MemoryMatrixViewModel(application: Application) : AndroidViewModel(applica
             val totalCells = _gridSize.value * _gridSize.value
             val newCell = Random.nextInt(totalCells)
             _sequence.value = _sequence.value + newCell
-            saveSequence(_sequence.value)
+            viewModelScope.launch {
+                gameRepository.saveMemoryMatrixSequence(_sequence.value)
+            }
         }
 
         _playerSequence.value = emptyList()
@@ -135,8 +128,10 @@ class MemoryMatrixViewModel(application: Application) : AndroidViewModel(applica
      * Reinicia el juego completamente.
      */
     fun resetGame() {
+        viewModelScope.launch {
+            gameRepository.clearMemoryMatrixSequence()
+        }
         _sequence.value = emptyList()
-        saveSequence(emptyList())
         _playerSequence.value = emptyList()
         _sequenceCount.value = 0
         _gameOver.value = false

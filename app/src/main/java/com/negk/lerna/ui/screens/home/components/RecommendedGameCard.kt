@@ -2,7 +2,6 @@ package com.negk.lerna.ui.screens.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -11,12 +10,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.res.painterResource
 import com.negk.lerna.R
 import com.negk.lerna.ui.components.BaseCard
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import com.negk.lerna.data.GameRepository
+import com.negk.lerna.ui.components.shimmerBackground
+import com.negk.lerna.data.Game
+import com.negk.lerna.data.Graph
 import com.negk.lerna.data.gameDrawableMap
 
 @Composable
@@ -27,10 +29,11 @@ fun RecommendedGameCard(
     imageSize: Dp = 150.dp,
     onButtonClick: () -> Unit = {}
 ) {
-    val context = LocalContext.current
-    // 1. Obtener datos del juego si se pasa gameId
-    val game = remember(gameId) {
-        gameId?.let { GameRepository.getGameById(context, it) }
+    // 1. Obtener datos del juego de forma reactiva si se pasa gameId
+    val game by produceState<Game?>(initialValue = null, gameId) {
+        if (gameId != null) {
+            Graph.gameRepository.getGameById(gameId).collect { value = it }
+        }
     }
 
     BaseCard(
@@ -50,35 +53,58 @@ fun RecommendedGameCard(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    // 2. Mostrar título y descripción desde game o fallback
-                    Text(
-                        text = game?.title ?: "Titulo",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = game?.description ?: "Descripcion",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Start
+                if (game == null && gameId != null) { // Estado de carga (Skeleton)
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Box(modifier = Modifier
+							.fillMaxWidth(0.6f)
+							.height(28.dp) // Aprox. titleLarge
+							.shimmerBackground())
+						Spacer(modifier = Modifier.height(8.dp))
+						Box(modifier = Modifier
+							.fillMaxWidth(0.8f)
+							.height(20.dp) // Aprox. bodyMedium
+							.shimmerBackground())
+                    }
+                    Box(modifier = Modifier
+						.size(imageSize)
+						.weight(1f)
+						.padding(start = 50.dp)
+						.shimmerBackground())
+                } else if (game != null) {
+                    // Contenido cargado
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        // 2. Mostrar título y descripción desde game
+                        Text(
+                            text = game!!.title,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            text = game!!.description,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Start
+                        )
+                    }
+                    // 3. Imagen desde gameId
+                    val imageRes = game!!.id.let { id ->
+                        gameDrawableMap[id]
+                    } ?: R.drawable.memory_matrix // Recurso por defecto si no se encuentra
+                    Image(
+                        painter = painterResource(id = imageRes),
+                        contentDescription = game!!.title,
+                        modifier = Modifier
+                            .size(imageSize)
+                            .weight(1f)
+                            .padding(start = 50.dp)
                     )
                 }
-                // 3. Imagen desde gameId
-                val imageRes = game?.id?.let { id ->
-                    gameDrawableMap[id]
-                } ?: R.drawable.memory_matrix // Recurso por defecto si no se encuentra
-                Image(
-                    painter = painterResource(id = imageRes),
-                    contentDescription = game?.title ?: "Juego recomendado",
-                    modifier = Modifier
-                        .size(imageSize)
-                        .weight(1f)
-                        .padding(start = 50.dp)
-                )
             }
         }
     }

@@ -30,6 +30,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.negk.lerna.navigation.Screen
+import com.negk.lerna.data.Graph
 import com.negk.lerna.ui.screens.home.HomeScreen
 import com.negk.lerna.ui.screens.GamesScreen
 import com.negk.lerna.ui.screens.TestsScreen
@@ -46,6 +47,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        Graph.provide(this)
         setContent {
             LernaTheme {
                 val navController = rememberNavController()
