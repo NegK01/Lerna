@@ -14,7 +14,7 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.negk.lerna.data.Game
+import com.negk.lerna.data.model.Game
 import com.negk.lerna.data.Graph
 import com.negk.lerna.ui.screens.pre_game.PreGameScreen
 import com.negk.lerna.ui.theme.LernaTheme

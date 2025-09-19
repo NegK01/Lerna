@@ -1,10 +1,10 @@
-package com.negk.lerna.data
+package com.negk.lerna.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.negk.lerna.data.GameEntity
+import com.negk.lerna.data.db.entity.GameEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

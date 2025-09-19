@@ -7,8 +7,11 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.negk.lerna.ui.game.memory.MemoryMatrixStateDao
-import com.negk.lerna.ui.game.memory.MemoryMatrixStateEntity
+import com.negk.lerna.data.db.dao.GameDao
+import com.negk.lerna.data.db.entity.GameEntity
+import com.negk.lerna.data.db.dao.MemoryMatrixStateDao
+import com.negk.lerna.data.db.entity.MemoryMatrixStateEntity
+import com.negk.lerna.data.model.GameJson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

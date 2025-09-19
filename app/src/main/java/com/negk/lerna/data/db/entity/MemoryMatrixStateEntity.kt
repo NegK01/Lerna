@@ -1,4 +1,4 @@
-package com.negk.lerna.ui.game.memory
+package com.negk.lerna.data.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

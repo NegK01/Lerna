@@ -3,31 +3,14 @@ package com.negk.lerna.data
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.negk.lerna.data.db.GameDao
-import com.negk.lerna.data.db.GameEntity
-import com.negk.lerna.data.db.MemoryMatrixStateDao
-import com.negk.lerna.data.db.MemoryMatrixStateEntity
+import com.negk.lerna.data.db.dao.GameDao
+import com.negk.lerna.data.db.entity.GameEntity
+import com.negk.lerna.data.db.dao.MemoryMatrixStateDao
+import com.negk.lerna.data.db.entity.MemoryMatrixStateEntity
+import com.negk.lerna.data.model.Game
+import com.negk.lerna.data.model.GameJson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-
-// Esta clase ya no es necesaria, la información se mapea desde GameEntity
-data class GameJson(
-    val id: String,
-    val title: String,
-    val description: String,
-    val cognitiveArea: String,
-    val instructions: String,
-    val hasLevels: Boolean
-)
-
-data class Game(
-    val id: String,
-    val title: String,
-    val description: String,
-    val hasLevels: Boolean,
-    val levels: List<String>,
-    val difficulty: String
-)
 
 class GameRepository(
     private val gameDao: GameDao,

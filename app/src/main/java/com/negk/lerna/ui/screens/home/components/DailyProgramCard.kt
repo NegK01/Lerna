@@ -17,9 +17,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import com.negk.lerna.ui.components.BaseCard
 import com.negk.lerna.ui.components.shimmerBackground
-import com.negk.lerna.data.Game
+import com.negk.lerna.data.model.Game
 import com.negk.lerna.data.Graph
-import com.negk.lerna.data.gameDrawableMap
+import com.negk.lerna.ui.game.utils.gameDrawableMap
 
 /**
  * DailyProgramCard
