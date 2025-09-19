@@ -18,7 +18,7 @@ Lerna – Brain Training is a mobile application designed to improve cognitive s
 Language: Kotlin <br>
 UI Framework: Jetpack Compose <br>
 Min SDK: 29 <br>
-Target SDK: 34 <br>
+Target SDK: 35 <br>
 Build System: Gradle (Groovy DSL) <br>
 
 #### Project Structure (simplified) <br>
@@ -57,7 +57,7 @@ Lerna – Brain Training es una aplicación móvil diseñada para mejorar habili
 Lenguaje: Kotlin <br>
 UI Framework: Jetpack Compose <br>
 Min SDK: 29 <br>
-Target SDK: 34 <br>
+Target SDK: 35 <br>
 Build System: Gradle (Groovy DSL) <br>
 
 #### Estructura del Proyecto (simplificada) <br>
