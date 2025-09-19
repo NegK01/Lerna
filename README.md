@@ -22,15 +22,17 @@ Target SDK: 34 <br>
 Build System: Gradle (Groovy DSL) <br>
 
 #### Project Structure (simplified) <br>
-main <br>
-├─ java/com/negk/lerna <br>
-│  ├─ MainActivity.kt <br>
-│  ├─ PreGameActivity.kt <br>
-│  ├─ GameActivity.kt <br>
-│  ├─ data/... <br>
-│  ├─ ui/screens/... <br>
-│  └─ ui/components/... <br>
+```
+main
+├─ java/com/negk/lerna
+│  ├─ MainActivity.kt
+│  ├─ PreGameActivity.kt
+│  ├─ GameActivity.kt
+│  ├─ data/...
+│  ├─ ui/screens/...
+│  └─ ui/components/...
 └─ res/...
+```
 
 #### Future Development (not in demo)
 - Expanded catalog of cognitive games.
@@ -59,6 +61,7 @@ Target SDK: 34 <br>
 Build System: Gradle (Groovy DSL) <br>
 
 #### Estructura del Proyecto (simplificada) <br>
+```
 main <br>
 ├─ java/com/negk/lerna <br>
 │  ├─ MainActivity.kt <br>
@@ -68,6 +71,7 @@ main <br>
 │  ├─ ui/screens/... <br>
 │  └─ ui/components/... <br>
 └─ res/...
+```
 
 #### Futuro Desarrollo (no incluido en demo)
 - Ampliación del catálogo de juegos cognitivos.
