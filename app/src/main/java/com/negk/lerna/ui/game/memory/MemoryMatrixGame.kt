@@ -35,8 +35,10 @@ import androidx.compose.runtime.setValue
  * Muestra la interfaz del juego con HUD, rejilla, controles y estado.
  */
 @Composable
-fun MemoryMatrixGame(viewModel: MemoryMatrixViewModel = viewModel()) {
-    val context = LocalContext.current
+fun MemoryMatrixGame(
+    viewModel: MemoryMatrixViewModel = viewModel(),
+    onExit: () -> Unit
+) {
     val gridSize by viewModel.gridSize.collectAsState()
     val sequence by viewModel.sequence.collectAsState()
     val isShowingSequence by viewModel.isShowingSequence.collectAsState()
@@ -103,7 +105,7 @@ fun MemoryMatrixGame(viewModel: MemoryMatrixViewModel = viewModel()) {
         showLevelComplete = false, // No usar level complete
         onDismissLevelComplete = {},
         hudMode = HUDMode.None, // Sin barra de progreso
-        onExitClick = { (context as? androidx.activity.ComponentActivity)?.finish() },
+        onExitClick = onExit,
     )
 
     // Modal de game over

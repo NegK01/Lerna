@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.negk.lerna.ui.game.memory.MemoryMatrixGame
 import com.negk.lerna.ui.theme.LernaTheme
 import com.negk.lerna.data.GameRegistry
 
@@ -48,7 +47,7 @@ class GameActivity : ComponentActivity() {
                         .fillMaxSize()
                         .padding(innerPadding)
                     ) {
-                        gameComposable()
+                        gameComposable { finish() }
                     }
                 }
             }

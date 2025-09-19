@@ -15,6 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Canvas
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 
 sealed class HUDMode {
@@ -35,7 +39,7 @@ fun GameHUD(
     onExitClick: () -> Unit = {}
 ) {
     // Animatable para controlar la barra de progreso del temporizador
-    var timerAnim = remember { Animatable(1f) }
+    val timerAnim = remember { Animatable(1f) }
 
     // Inicia la animación lineal del temporizador cuando se activa el modo Timer
     LaunchedEffect(hudMode) {
@@ -60,8 +64,13 @@ fun GameHUD(
                     .padding(8.dp, 0.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                //TODO cambiar la x con un icon con contentDescription y considerar si usar un IconButton o no, usar quiza un 48.dp para cumplir con el tamaño mínimo de toque si es con iconButton
-                Button(onClick = onExitClick, Modifier.width(60.dp)) { Text("x") }
+                IconButton(onClick = onExitClick) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Salir del juego"
+                    )
+                }
+
                 Spacer(modifier = Modifier.width(8.dp))
 
                 when (hudMode) {
