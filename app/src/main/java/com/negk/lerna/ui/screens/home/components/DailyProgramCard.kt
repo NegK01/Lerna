@@ -50,10 +50,11 @@ fun DailyProgramCard(
 	}
 
 	BaseCard(
-		modifier = modifier
-			.height(height)
-			.clickable(onClick = onButtonClick),
-		backgroundColor = MaterialTheme.colorScheme.surface
+	    modifier = modifier
+	        .height(height)
+	        .clickable(onClick = onButtonClick),
+	    backgroundColor = MaterialTheme.colorScheme.surface,
+	    elevation = 8.dp
 	) {
 		Column(
 			modifier = Modifier.fillMaxSize(),

@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.negk.lerna.R
 import com.negk.lerna.ui.screens.home.components.RecommendedGameCard
 import android.content.Intent
 import androidx.compose.ui.platform.LocalContext
@@ -29,8 +28,13 @@ fun HomeScreen(navController: NavController) {
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
+        Text(
+            text = "Programa del día",
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
 
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Tarjeta destacada del programa del día
         DailyProgramCard(
@@ -54,7 +58,7 @@ fun HomeScreen(navController: NavController) {
             color = MaterialTheme.colorScheme.onBackground,
         )
 
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Ejemplo de juego recomendado
         RecommendedGameCard(
@@ -67,7 +71,7 @@ fun HomeScreen(navController: NavController) {
             }
         )
 
-        Spacer(modifier = Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         RecommendedGameCard(
             height = 100.dp,

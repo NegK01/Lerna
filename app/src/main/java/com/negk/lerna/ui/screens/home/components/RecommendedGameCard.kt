@@ -37,7 +37,8 @@ fun RecommendedGameCard(
         modifier = modifier
             .height(height)
             .clickable(onClick = onButtonClick),
-        backgroundColor = MaterialTheme.colorScheme.surface
+        backgroundColor = MaterialTheme.colorScheme.surface,
+        elevation = 6.dp
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -72,7 +73,7 @@ fun RecommendedGameCard(
                 } ?: R.drawable.memory_matrix // Recurso por defecto si no se encuentra
                 Image(
                     painter = painterResource(id = imageRes),
-                    contentDescription = null,
+                    contentDescription = game?.title ?: "Juego recomendado",
                     modifier = Modifier
                         .size(imageSize)
                         .weight(1f)

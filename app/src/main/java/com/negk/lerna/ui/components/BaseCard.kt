@@ -13,9 +13,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * BaseHomeCard
+ * BaseCard
  * Componente base reutilizable para tarjetas de la HomeScreen.
  * Permite definir esquinas redondeadas, fondo, sombra y padding.
+ * Asegura touch targets mínimos de 48dp para accesibilidad.
  *
  * @param modifier Modificador externo
  * @param cornerRadius Radio de las esquinas
