@@ -75,31 +75,32 @@ fun RecommendedGameCard(
 						.padding(start = 50.dp)
 						.shimmerBackground())
                 } else if (game != null) {
+                    val currentGame = game
                     // Contenido cargado
                     Column(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.Center
                     ) {
-                        // 2. Mostrar título y descripción desde game
+                        // 2. Mostrar título y descripción desde currentGame
                         Text(
-                            text = game!!.title,
+                            text = currentGame!!.title,
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = game!!.description,
+                            text = currentGame!!.description,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Start
                         )
                     }
                     // 3. Imagen desde gameId
-                    val imageRes = game!!.id.let { id ->
+                    val imageRes = currentGame!!.id.let { id ->
                         gameDrawableMap[id]
                     } ?: R.drawable.memory_matrix // Recurso por defecto si no se encuentra
                     Image(
                         painter = painterResource(id = imageRes),
-                        contentDescription = game!!.title,
+                        contentDescription = currentGame!!.title,
                         modifier = Modifier
                             .size(imageSize)
                             .weight(1f)

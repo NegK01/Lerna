@@ -16,13 +16,10 @@ object JsonDataPopulator {
      * Lee el archivo games.json de los assets, lo parsea y lo inserta en la base de datos.
      * Esta función puede ser utilizada tanto para la población inicial como para la sincronización.
      *
-     * @param context Contexto de la aplicación para acceder a los assets.
+     * @param gamesJsonString El contenido del JSON de juegos como un String.
      * @param gameDao El DAO para insertar los juegos en la base de datos.
      */
-    suspend fun populateGames(context: Context, gameDao: GameDao) {
-        // 1. Leer el archivo JSON desde assets
-        val gamesJsonString = context.assets.open("games.json").bufferedReader().use { it.readText() }
-
+    suspend fun populateGames(gamesJsonString: String, gameDao: GameDao) {
         // 2. Parsear el JSON a una lista de objetos GameJson
         val gameListType = object : TypeToken<List<GameJson>>() {}.type
         val gamesList: List<GameJson> = Gson().fromJson(gamesJsonString, gameListType)

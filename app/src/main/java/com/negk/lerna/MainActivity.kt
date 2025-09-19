@@ -148,11 +148,15 @@ class MainActivity : ComponentActivity() {
 
             if (currentVersionCode > lastSyncVersionCode) {
                 lifecycleScope.launch {
-                    // Sincronizar datos en un hilo de fondo
-                    Graph.gameRepository.syncGamesFromJson(applicationContext)
+                    try {
+                    // Sincronizar datos en un hilo de fondo. Ya no se necesita el contexto aquí.
+                    Graph.gameRepository.syncGamesFromJson()
 
                     // Actualizar la versión guardada tras una sincronización exitosa
                     prefs.edit().putLong(LAST_SYNC_VERSION_CODE_KEY, currentVersionCode).apply()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error during data sync", e)
+                    }
                 }
             }
         } catch (e: android.content.pm.PackageManager.NameNotFoundException) {

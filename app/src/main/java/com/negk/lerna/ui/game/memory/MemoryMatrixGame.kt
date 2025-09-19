@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.negk.lerna.data.Graph
-import com.negk.lerna.ui.game.memory.MemoryMatrixViewModelFactory
 import com.negk.lerna.ui.game.GameHUD
 import com.negk.lerna.ui.game.HUDMode
 import androidx.compose.animation.core.*

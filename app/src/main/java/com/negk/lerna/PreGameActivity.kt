@@ -26,7 +26,10 @@ class PreGameActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         // Obtener gameId desde el Intent
-        val gameId = intent.getStringExtra("gameId") ?: ""
+        val gameId = intent.getStringExtra("gameId") ?: run {
+            finish()
+            return
+        }
 
         setContent {
             LernaTheme {

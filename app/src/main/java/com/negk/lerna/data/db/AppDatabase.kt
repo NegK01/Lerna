@@ -1,4 +1,4 @@
-package com.negk.lerna.data
+package com.negk.lerna.data.db
 
 import android.content.Context
 import androidx.room.Database
@@ -6,11 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.negk.lerna.data.db.Converters
 import com.negk.lerna.data.db.dao.GameDao
 import com.negk.lerna.data.db.entity.GameEntity
 import com.negk.lerna.data.db.dao.MemoryMatrixStateDao
 import com.negk.lerna.data.db.entity.MemoryMatrixStateEntity
+import com.negk.lerna.data.source.AssetGameJsonProvider
 import com.negk.lerna.data.util.JsonDataPopulator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +48,9 @@ abstract class AppDatabase : RoomDatabase() {
             INSTANCE?.let { database ->
                 scope.launch(Dispatchers.IO) {
                     // Poblar la base de datos usando el método centralizado
-                    JsonDataPopulator.populateGames(context, database.gameDao())
+                    val gameJsonProvider = AssetGameJsonProvider(context)
+                    val gamesJsonString = gameJsonProvider.getGamesJsonString()
+                    JsonDataPopulator.populateGames(gamesJsonString, database.gameDao())
                 }
             }
         }

@@ -2,7 +2,7 @@ package com.negk.lerna.ui.game.memory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.negk.lerna.data.GameRepository
+import com.negk.lerna.data.repository.GameRepository
 
 /**
  * Factory para crear instancias de [MemoryMatrixViewModel].

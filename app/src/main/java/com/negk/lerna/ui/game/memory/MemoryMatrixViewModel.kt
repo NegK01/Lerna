@@ -2,7 +2,7 @@ package com.negk.lerna.ui.game.memory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.negk.lerna.data.GameRepository
+import com.negk.lerna.data.repository.GameRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
