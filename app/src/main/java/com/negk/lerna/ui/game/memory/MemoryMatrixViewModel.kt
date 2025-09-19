@@ -17,6 +17,7 @@ import androidx.core.content.edit
  */
 class MemoryMatrixViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
+        private const val KEY_SEQUENCE = "sequence"
         private const val CELL_LIT_DURATION_MS = 1000L
         private const val PAUSE_BETWEEN_CELLS_MS = 500L
         const val WIN_SEQUENCE_COUNT = 100
@@ -60,7 +61,7 @@ class MemoryMatrixViewModel(application: Application) : AndroidViewModel(applica
     val showAchieved: StateFlow<Boolean> = _showAchieved
 
     private fun loadSequence(): List<Int> {
-        val sequenceString = prefs.getString("sequence", "") ?: ""
+        val sequenceString = prefs.getString(KEY_SEQUENCE, "") ?: ""
         return if (sequenceString.isNotEmpty()) {
             sequenceString.split(",").mapNotNull { it.toIntOrNull() }
         } else {
@@ -70,7 +71,7 @@ class MemoryMatrixViewModel(application: Application) : AndroidViewModel(applica
 
     private fun saveSequence(sequence: List<Int>) {
         val sequenceString = sequence.joinToString(",")
-        prefs.edit { putString("sequence", sequenceString) }
+        prefs.edit { putString(KEY_SEQUENCE, sequenceString) }
     }
 
     /**

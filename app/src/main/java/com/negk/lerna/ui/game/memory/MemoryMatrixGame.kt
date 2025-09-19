@@ -119,7 +119,8 @@ fun MemoryMatrixGame(
     // Modal de juego completado
     if (gameCompleted) {
         GameCompletedModal(
-            onDismiss = { viewModel.resetGame() }
+            onDismiss = { viewModel.resetGame() },
+            winCount = MemoryMatrixViewModel.WIN_SEQUENCE_COUNT
         )
     }
 }
@@ -236,7 +237,7 @@ fun GameOverModal(score: Int, onDismiss: () -> Unit) {
  * Modal para juego completado.
  */
 @Composable
-fun GameCompletedModal(onDismiss: () -> Unit) {
+fun GameCompletedModal(winCount: Int, onDismiss: () -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
         Card(
             modifier = Modifier.padding(16.dp),
@@ -248,7 +249,7 @@ fun GameCompletedModal(onDismiss: () -> Unit) {
             ) {
                 Text("¡Felicidades!", style = MaterialTheme.typography.titleLarge)
                 Spacer(Modifier.height(8.dp))
-                Text("Has completado el juego con ${MemoryMatrixViewModel.WIN_SEQUENCE_COUNT} secuencias", style = MaterialTheme.typography.bodyMedium)
+                Text("Has completado el juego con $winCount secuencias", style = MaterialTheme.typography.bodyMedium)
                 Spacer(Modifier.height(16.dp))
                 Button(onClick = onDismiss) { Text("Reiniciar") }
             }
