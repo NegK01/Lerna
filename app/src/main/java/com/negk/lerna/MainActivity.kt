@@ -5,6 +5,7 @@ package com.negk.lerna
  * Gestiona la navegación entre las pantallas principales usando Jetpack Compose y Navigation Compose.
  * Pantallas: Home, Juegos, Tests, Perfil.
  */
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,6 +39,7 @@ import com.negk.lerna.ui.screens.TestsScreen
 import com.negk.lerna.ui.screens.ProfileScreen
 import com.negk.lerna.ui.theme.LernaTheme
 import com.negk.lerna.ui.components.Header
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     /**
@@ -48,6 +51,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         Graph.provide(this)
+
+        checkForDataSync()
+
         setContent {
             LernaTheme {
                 val navController = rememberNavController()
@@ -116,6 +122,31 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Comprueba si la app ha sido actualizada y sincroniza los datos de los juegos si es necesario.
+     */
+    private fun checkForDataSync() {
+        val prefs = getSharedPreferences("LernaApp", Context.MODE_PRIVATE)
+        val lastSyncVersionCode = prefs.getInt("last_sync_version_code", 0)
+
+        try {
+            val packageInfo = packageManager.getPackageInfo(packageName, 0)
+            val currentVersionCode = packageInfo.longVersionCode.toInt()
+
+            if (currentVersionCode > lastSyncVersionCode) {
+                lifecycleScope.launch {
+                    // Sincronizar datos en un hilo de fondo
+                    Graph.gameRepository.syncGamesFromJson(applicationContext)
+
+                    // Actualizar la versión guardada tras una sincronización exitosa
+                    prefs.edit().putInt("last_sync_version_code", currentVersionCode).apply()
+                }
+            }
+        } catch (e: Exception) {
+            // Manejar la excepción si no se puede obtener la información del paquete
         }
     }
 }
