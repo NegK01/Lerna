@@ -3,7 +3,6 @@ package com.negk.lerna.ui.game.memory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.negk.lerna.data.GameRepository
-import com.negk.lerna.data.Graph
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +14,7 @@ import kotlin.random.Random
  * Maneja el estado del juego, incluyendo secuencia lineal, progreso y lógica de juego.
  */
 class MemoryMatrixViewModel(
-    private val gameRepository: GameRepository = Graph.gameRepository
+    private val gameRepository: GameRepository
 ) : ViewModel() {
     companion object {
         private const val CELL_LIT_DURATION_MS = 1000L

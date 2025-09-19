@@ -9,6 +9,7 @@ import com.negk.lerna.data.db.dao.MemoryMatrixStateDao
 import com.negk.lerna.data.db.entity.MemoryMatrixStateEntity
 import com.negk.lerna.data.model.Game
 import com.negk.lerna.data.model.GameJson
+import com.negk.lerna.data.util.JsonDataPopulator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -55,23 +56,6 @@ class GameRepository(
      * Esto asegura que los datos de los juegos se actualicen después de una actualización de la app.
      */
     suspend fun syncGamesFromJson(context: Context) {
-        val gamesJsonString = context.assets.open("games.json").bufferedReader().use { it.readText() }
-        val gameListType = object : TypeToken<List<GameJson>>() {}.type
-        val gamesList: List<GameJson> = Gson().fromJson(gamesJsonString, gameListType)
-
-        val gameEntities = gamesList.map { gameJson ->
-            GameEntity(
-                id = gameJson.id,
-                title = gameJson.title,
-                description = gameJson.description,
-                cognitiveArea = gameJson.cognitiveArea,
-                instructions = gameJson.instructions,
-                hasLevels = gameJson.hasLevels
-            )
-        }
-
-        // Usando insertAll con OnConflictStrategy.REPLACE, se actualizarán los juegos
-        // existentes y se insertarán los nuevos.
-        gameDao.insertAll(gameEntities)
+        JsonDataPopulator.populateGames(context, gameDao)
     }
 }

@@ -11,6 +11,6 @@ interface MemoryMatrixStateDao {
     @Query("SELECT * FROM memory_matrix_state WHERE id = :id")
     suspend fun getState(id: String = "default_state"): MemoryMatrixStateEntity?
 
-    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveState(state: MemoryMatrixStateEntity)
 }

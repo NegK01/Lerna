@@ -7,6 +7,7 @@ package com.negk.lerna
  */
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -42,6 +43,10 @@ import com.negk.lerna.ui.components.Header
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        private const val TAG = "MainActivity"
+    }
+
     /**
      * Método de ciclo de vida onCreate.
      * Configura el tema, la navegación y la estructura principal de la app.
@@ -146,7 +151,8 @@ class MainActivity : ComponentActivity() {
                 }
             }
         } catch (e: Exception) {
-            // Manejar la excepción si no se puede obtener la información del paquete
+            // Registrar el error si no se puede obtener la información del paquete.
+            Log.e(TAG, "Failed to get package info for data sync.", e)
         }
     }
 }

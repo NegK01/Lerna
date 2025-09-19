@@ -46,6 +46,7 @@ class PreGameActivity : ComponentActivity() {
                             modifier = Modifier.fillMaxSize().padding(innerPadding),
                             contentAlignment = Alignment.Center
                         ) {
+                            // Si llega un gameid nulo se mostrara la animacion infinitamente, da igual pues se procura que eso no pase, ademas no se va poder accerder pues esa card no se mostrara
                             CircularProgressIndicator()
                         }
                     } else {

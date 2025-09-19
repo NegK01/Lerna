@@ -53,6 +53,7 @@ fun RecommendedGameCard(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                // si llega un gameid incorrecto se mostrara la animacion infinitamente, se procurara de que no pase
                 if (game == null && gameId != null) { // Estado de carga (Skeleton)
                     Column(
                         modifier = Modifier.weight(1f),
