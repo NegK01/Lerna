@@ -40,7 +40,10 @@ class PreGameActivity : ComponentActivity() {
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
-                    if (gameData == null) {
+                    // Usamos una variable local para aprovechar el smart casting de Kotlin
+                    // y evitar el uso del operador de aserción no nula (!!).
+                    val currentGame = gameData
+                    if (currentGame == null) {
                         // Estado de carga a pantalla completa
                         Box(
                             modifier = Modifier.fillMaxSize().padding(innerPadding),
@@ -51,11 +54,11 @@ class PreGameActivity : ComponentActivity() {
                         }
                     } else {
                         PreGameScreen(
-                            game = gameData!!,
+                            game = currentGame,
                             modifier = Modifier.padding(innerPadding),
                             onPlayClick = {
                                 // Crear Intent para abrir GameActivity
-                                gameData!!.id.takeIf { it.isNotEmpty() }?.let { id ->
+                                currentGame.id.takeIf { it.isNotEmpty() }?.let { id ->
                                     val intent = Intent(this, GameActivity::class.java)
                                     intent.putExtra("gameId", id)
                                     startActivity(intent)

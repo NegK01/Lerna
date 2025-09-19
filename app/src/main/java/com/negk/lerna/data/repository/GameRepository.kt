@@ -35,20 +35,16 @@ class GameRepository(
 
     suspend fun loadMemoryMatrixSequence(): List<Int> {
         val state = memoryMatrixStateDao.getState()
-        return if (state != null && state.sequence.isNotEmpty()) {
-            state.sequence.split(",").mapNotNull { it.toIntOrNull() }
-        } else {
-            emptyList()
-        }
+        // El TypeConverter ya nos da una List<Int>. Simplemente la retornamos.
+        return state?.sequence ?: emptyList()
     }
 
     suspend fun saveMemoryMatrixSequence(sequence: List<Int>) {
-        val sequenceString = sequence.joinToString(",")
-        memoryMatrixStateDao.saveState(MemoryMatrixStateEntity(sequence = sequenceString))
+        memoryMatrixStateDao.saveState(MemoryMatrixStateEntity(sequence = sequence))
     }
 
     suspend fun clearMemoryMatrixSequence() {
-        memoryMatrixStateDao.saveState(MemoryMatrixStateEntity(sequence = ""))
+        memoryMatrixStateDao.saveState(MemoryMatrixStateEntity(sequence = emptyList()))
     }
 
     /**

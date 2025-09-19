@@ -45,6 +45,8 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     companion object {
         private const val TAG = "MainActivity"
+        private const val LERNA_APP_PREFS = "LernaApp"
+        private const val LAST_SYNC_VERSION_CODE_KEY = "last_sync_version_code"
     }
 
     /**
@@ -134,12 +136,15 @@ class MainActivity : ComponentActivity() {
      * Comprueba si la app ha sido actualizada y sincroniza los datos de los juegos si es necesario.
      */
     private fun checkForDataSync() {
-        val prefs = getSharedPreferences("LernaApp", Context.MODE_PRIVATE)
-        val lastSyncVersionCode = prefs.getInt("last_sync_version_code", 0)
+        val prefs = getSharedPreferences(LERNA_APP_PREFS, Context.MODE_PRIVATE)
+        // Se maneja la posible ClassCastException leyendo el valor como un tipo Number y convirtiéndolo a Long.
+        // Esto asegura la retrocompatibilidad si el valor fue guardado previamente como un Int.
+        val lastSyncValue = prefs.all[LAST_SYNC_VERSION_CODE_KEY]
+        val lastSyncVersionCode = (lastSyncValue as? Number)?.toLong() ?: 0L
 
         try {
             val packageInfo = packageManager.getPackageInfo(packageName, 0)
-            val currentVersionCode = packageInfo.longVersionCode.toInt()
+            val currentVersionCode = packageInfo.longVersionCode
 
             if (currentVersionCode > lastSyncVersionCode) {
                 lifecycleScope.launch {
@@ -147,10 +152,10 @@ class MainActivity : ComponentActivity() {
                     Graph.gameRepository.syncGamesFromJson(applicationContext)
 
                     // Actualizar la versión guardada tras una sincronización exitosa
-                    prefs.edit().putInt("last_sync_version_code", currentVersionCode).apply()
+                    prefs.edit().putLong(LAST_SYNC_VERSION_CODE_KEY, currentVersionCode).apply()
                 }
             }
-        } catch (e: Exception) {
+        } catch (e: android.content.pm.PackageManager.NameNotFoundException) {
             // Registrar el error si no se puede obtener la información del paquete.
             Log.e(TAG, "Failed to get package info for data sync.", e)
         }

@@ -67,8 +67,11 @@ fun DailyProgramCard(
 				modifier = Modifier.weight(1f).fillMaxWidth(),
 				verticalAlignment = Alignment.CenterVertically,
 			) {
+				// Usamos una variable local para aprovechar el smart casting de Kotlin
+				// y evitar el uso del operador de aserción no nula (!!).
+				val currentGame = game
 				// si llega un gameid incorrecto se mostrara la animacion infinitamente, se procurara de que no pase
-				if (game == null && gameId != null) { // Estado de carga (Skeleton)
+				if (currentGame == null && gameId != null) { // Estado de carga (Skeleton)
 					Column(
 						modifier = Modifier.weight(1f),
 						verticalArrangement = Arrangement.Center
@@ -88,7 +91,7 @@ fun DailyProgramCard(
 						.weight(1f)
 						.padding(start = 20.dp, top = 8.dp)
 						.shimmerBackground())
-				} else if (game != null) {
+				} else if (currentGame != null) {
 					// Contenido cargado
 					Column(
 						modifier = Modifier.weight(1f),
@@ -96,25 +99,25 @@ fun DailyProgramCard(
 					) {
 						// 2. Mostrar título y descripción desde game
 						Text(
-							text = game!!.title,
+							text = currentGame.title,
 							style = MaterialTheme.typography.titleLarge,
 							color = MaterialTheme.colorScheme.onSurface
 						)
 						Spacer(modifier = Modifier.height(8.dp))
 						Text(
-							text = game!!.description,
+							text = currentGame.description,
 							style = MaterialTheme.typography.bodyMedium,
 							color = MaterialTheme.colorScheme.onSurfaceVariant,
 							textAlign = TextAlign.Start
 						)
 					}
 					// 3. Imagen desde gameId
-					val imageRes = game!!.id.let { id ->
+					val imageRes = currentGame.id.let { id ->
 						gameDrawableMap[id]
 					} ?: R.drawable.memory_matrix // Recurso por defecto si no se encuentra
 					Image(
 						painter = painterResource(id = imageRes),
-						contentDescription = game!!.title,
+						contentDescription = currentGame.title,
 						modifier = Modifier
 							.size(imageSize)
 							.weight(1f)
