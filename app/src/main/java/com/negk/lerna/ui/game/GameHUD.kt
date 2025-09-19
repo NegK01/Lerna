@@ -43,7 +43,7 @@ fun GameHUD(
             timerAnim.snapTo(1f) // Reinicia la animación al 100%
             timerAnim.animateTo(
                 targetValue = 0f, // Anima hasta 0% al finalizar
-                animationSpec = tween(durationMillis = hudMode.totalTimeMs.toInt(), easing = LinearEasing)
+                animationSpec = tween(durationMillis = hudMode.totalTimeMs.coerceAtMost(Int.MAX_VALUE.toLong()).toInt(), easing = LinearEasing)
             )
             hudMode.onFinish() // Ejecuta acción al llegar a 0
         }
@@ -60,6 +60,7 @@ fun GameHUD(
                     .padding(8.dp, 0.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                //TODO cambiar la x con un icon con contentDescription y considerar si usar un IconButton o no, usar quiza un 48.dp para cumplir con el tamaño mínimo de toque si es con iconButton
                 Button(onClick = onExitClick, Modifier.width(60.dp)) { Text("x") }
                 Spacer(modifier = Modifier.width(8.dp))
 

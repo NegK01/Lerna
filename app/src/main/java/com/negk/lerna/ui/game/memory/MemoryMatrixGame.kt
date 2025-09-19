@@ -45,7 +45,6 @@ fun MemoryMatrixGame(viewModel: MemoryMatrixViewModel = viewModel()) {
     val gameOver by viewModel.gameOver.collectAsState()
     val gameCompleted by viewModel.gameCompleted.collectAsState()
     val showAchieved by viewModel.showAchieved.collectAsState()
-    var buttonTextClicked by remember { mutableStateOf(false) }
 
     GameHUD(
         gameContent = {
@@ -90,7 +89,6 @@ fun MemoryMatrixGame(viewModel: MemoryMatrixViewModel = viewModel()) {
                 // Botón de iniciar/continuar
                 Button(
                     onClick = {
-                        buttonTextClicked = true
                         if (gameOver || gameCompleted) viewModel.resetGame() else viewModel.startSequence()
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -226,9 +224,7 @@ fun GameOverModal(score: Int, onDismiss: () -> Unit) {
                 Spacer(Modifier.height(8.dp))
                 Text("Puntaje: $score secuencias", style = MaterialTheme.typography.bodyMedium)
                 Spacer(Modifier.height(16.dp))
-                Row {
-                    Button(onClick = onDismiss) { Text("Reiniciar") }
-                }
+                Button(onClick = onDismiss) { Text("Reiniciar") }
             }
         }
     }
@@ -250,11 +246,9 @@ fun GameCompletedModal(onDismiss: () -> Unit) {
             ) {
                 Text("¡Felicidades!", style = MaterialTheme.typography.titleLarge)
                 Spacer(Modifier.height(8.dp))
-                Text("Has completado el juego con 100 secuencias", style = MaterialTheme.typography.bodyMedium)
+                Text("Has completado el juego con ${MemoryMatrixViewModel.WIN_SEQUENCE_COUNT} secuencias", style = MaterialTheme.typography.bodyMedium)
                 Spacer(Modifier.height(16.dp))
-                Row {
-                    Button(onClick = onDismiss) { Text("Reiniciar") }
-                }
+                Button(onClick = onDismiss) { Text("Reiniciar") }
             }
         }
     }

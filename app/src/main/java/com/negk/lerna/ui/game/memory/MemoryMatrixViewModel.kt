@@ -16,6 +16,12 @@ import androidx.core.content.edit
  * Maneja el estado del juego, incluyendo secuencia lineal, progreso y lógica de juego.
  */
 class MemoryMatrixViewModel(application: Application) : AndroidViewModel(application) {
+    companion object {
+        private const val CELL_LIT_DURATION_MS = 1000L
+        private const val PAUSE_BETWEEN_CELLS_MS = 500L
+        const val WIN_SEQUENCE_COUNT = 100
+    }
+
     private val prefs = application.getSharedPreferences("MemoryMatrix", Context.MODE_PRIVATE)
 
     // Tamaño de la rejilla (fijo en 3x3 para simplicidad)
@@ -56,7 +62,7 @@ class MemoryMatrixViewModel(application: Application) : AndroidViewModel(applica
     private fun loadSequence(): List<Int> {
         val sequenceString = prefs.getString("sequence", "") ?: ""
         return if (sequenceString.isNotEmpty()) {
-            sequenceString.split(",").map { it.toInt() }
+            sequenceString.split(",").mapNotNull { it.toIntOrNull() }
         } else {
             emptyList()
         }
@@ -89,9 +95,9 @@ class MemoryMatrixViewModel(application: Application) : AndroidViewModel(applica
         viewModelScope.launch {
             for (cell in _sequence.value) {
                 _currentLitCell.value = cell
-                delay(1000) // Mostrar celda
+                delay(CELL_LIT_DURATION_MS) // Mostrar celda
                 _currentLitCell.value = null
-                delay(500) // Pausa entre celdas
+                delay(PAUSE_BETWEEN_CELLS_MS) // Pausa entre celdas
             }
             _isShowingSequence.value = false
         }
@@ -115,7 +121,7 @@ class MemoryMatrixViewModel(application: Application) : AndroidViewModel(applica
         // Si completa la secuencia
         if (_playerSequence.value == _sequence.value) {
             _sequenceCount.value = _sequence.value.size // Actualizar contador de secuencias completadas
-            if (_sequenceCount.value >= 100) {
+            if (_sequenceCount.value >= WIN_SEQUENCE_COUNT) {
                 _gameCompleted.value = true
             } else {
                 // La secuencia es correcta, mostrar "¡Logrado!" y esperar a que el usuario presione "Iniciar Secuencia" para continuar.
@@ -137,12 +143,5 @@ class MemoryMatrixViewModel(application: Application) : AndroidViewModel(applica
         _showAchieved.value = false
         _currentLitCell.value = null
         _isShowingSequence.value = false
-    }
-
-    /**
-     * Oculta el mensaje "Achieved".
-     */
-    fun hideAchieved() {
-        _showAchieved.value = false
     }
 }
