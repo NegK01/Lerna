@@ -6,17 +6,14 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.negk.lerna.R
-import com.negk.lerna.data.Game
-import com.negk.lerna.data.gameDrawableMap
+import com.negk.lerna.data.model.Game
+import com.negk.lerna.ui.game.utils.gameDrawableMap
 
 @Composable
 fun PreGameScreen(game: Game, modifier: Modifier = Modifier, onPlayClick: () -> Unit = {}) {

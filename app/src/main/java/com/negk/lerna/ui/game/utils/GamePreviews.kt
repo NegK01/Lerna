@@ -1,4 +1,4 @@
-package com.negk.lerna.data
+package com.negk.lerna.ui.game.utils
 
 import com.negk.lerna.R
 

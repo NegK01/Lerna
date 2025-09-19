@@ -3,7 +3,6 @@ package com.negk.lerna.ui.screens.home.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -14,10 +13,13 @@ import com.negk.lerna.R
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import com.negk.lerna.ui.components.BaseCard
-import androidx.compose.ui.platform.LocalContext
-import com.negk.lerna.data.GameRepository
-import com.negk.lerna.data.gameDrawableMap
+import com.negk.lerna.ui.components.shimmerBackground
+import com.negk.lerna.data.model.Game
+import com.negk.lerna.data.Graph
+import com.negk.lerna.ui.game.utils.gameDrawableMap
 
 /**
  * DailyProgramCard
@@ -43,10 +45,11 @@ fun DailyProgramCard(
 	buttonText: String = "Jugar",
 	onButtonClick: () -> Unit = {}
 ) {
-	val context = LocalContext.current
-	// 1. Obtener datos del juego si se pasa gameId
-	val game = remember(gameId) {
-		gameId?.let { GameRepository.getGameById(context, it) }
+	// 1. Obtener datos del juego de forma reactiva si se pasa gameId
+	val game by produceState<Game?>(initialValue = null, gameId) {
+		if (gameId != null) {
+			Graph.gameRepository.getGameById(gameId).collect { value = it }
+		}
 	}
 
 	BaseCard(
@@ -64,36 +67,63 @@ fun DailyProgramCard(
 				modifier = Modifier.weight(1f).fillMaxWidth(),
 				verticalAlignment = Alignment.CenterVertically,
 			) {
-				Column(
-					modifier = Modifier.weight(1f),
-					verticalArrangement = Arrangement.Center
-				) {
-					// 2. Mostrar título y descripción desde game o fallback
-					Text(
-						text = game?.title ?: "Titulo",
-						style = MaterialTheme.typography.titleLarge,
-						color = MaterialTheme.colorScheme.onSurface
-					)
-					Spacer(modifier = Modifier.height(8.dp))
-					Text(
-						text = game?.description ?: "Descripcion",
-						style = MaterialTheme.typography.bodyMedium,
-						color = MaterialTheme.colorScheme.onSurfaceVariant,
-						textAlign = TextAlign.Start
-					)
-				}
-				// 3. Imagen desde gameId
-				val imageRes = game?.id?.let { id ->
-					gameDrawableMap[id]
-				} ?: R.drawable.memory_matrix // Recurso por defecto si no se encuentra
-				Image(
-					painter = painterResource(id = imageRes),
-					contentDescription = game?.title ?: "Juego",
-					modifier = Modifier
+				// Usamos una variable local para aprovechar el smart casting de Kotlin
+				// y evitar el uso del operador de aserción no nula (!!).
+				val currentGame = game
+				// si llega un gameid incorrecto se mostrara la animacion infinitamente, se procurara de que no pase
+				if (currentGame == null && gameId != null) { // Estado de carga (Skeleton)
+					Column(
+						modifier = Modifier.weight(1f),
+						verticalArrangement = Arrangement.Center
+					) {
+						Box(modifier = Modifier
+							.fillMaxWidth(0.7f)
+							.height(28.dp) // Aprox. titleLarge
+							.shimmerBackground())
+						Spacer(modifier = Modifier.height(12.dp))
+						Box(modifier = Modifier
+							.fillMaxWidth(0.9f)
+							.height(20.dp) // Aprox. bodyMedium
+							.shimmerBackground())
+					}
+					Box(modifier = Modifier
 						.size(imageSize)
 						.weight(1f)
 						.padding(start = 20.dp, top = 8.dp)
-				)
+						.shimmerBackground())
+				} else if (currentGame != null) {
+					// Contenido cargado
+					Column(
+						modifier = Modifier.weight(1f),
+						verticalArrangement = Arrangement.Center
+					) {
+						// 2. Mostrar título y descripción desde game
+						Text(
+							text = currentGame.title,
+							style = MaterialTheme.typography.titleLarge,
+							color = MaterialTheme.colorScheme.onSurface
+						)
+						Spacer(modifier = Modifier.height(8.dp))
+						Text(
+							text = currentGame.description,
+							style = MaterialTheme.typography.bodyMedium,
+							color = MaterialTheme.colorScheme.onSurfaceVariant,
+							textAlign = TextAlign.Start
+						)
+					}
+					// 3. Imagen desde gameId
+					val imageRes = currentGame.id.let { id ->
+						gameDrawableMap[id]
+					} ?: R.drawable.memory_matrix // Recurso por defecto si no se encuentra
+					Image(
+						painter = painterResource(id = imageRes),
+						contentDescription = currentGame.title,
+						modifier = Modifier
+							.size(imageSize)
+							.weight(1f)
+							.padding(start = 20.dp, top = 8.dp)
+					)
+				}
 			}
 		}
 	}

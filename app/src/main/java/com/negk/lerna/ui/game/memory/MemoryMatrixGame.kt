@@ -1,6 +1,5 @@
 package com.negk.lerna.ui.game.memory
 
-import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,9 +9,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.negk.lerna.data.Graph
 import com.negk.lerna.ui.game.GameHUD
 import com.negk.lerna.ui.game.HUDMode
 import androidx.compose.animation.core.*
@@ -36,7 +35,9 @@ import androidx.compose.runtime.setValue
  */
 @Composable
 fun MemoryMatrixGame(
-    viewModel: MemoryMatrixViewModel = viewModel(),
+    // Se inyecta la factoría para que el ViewModel pueda ser creado con sus dependencias.
+    // Esto resuelve el error 'NoSuchMethodException' al no encontrar un constructor vacío.
+    viewModel: MemoryMatrixViewModel = viewModel(factory = MemoryMatrixViewModelFactory(Graph.gameRepository)),
     onExit: () -> Unit
 ) {
     val gridSize by viewModel.gridSize.collectAsState()

@@ -5,7 +5,9 @@ package com.negk.lerna
  * Gestiona la navegación entre las pantallas principales usando Jetpack Compose y Navigation Compose.
  * Pantallas: Home, Juegos, Tests, Perfil.
  */
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -24,20 +26,29 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.negk.lerna.navigation.Screen
+import com.negk.lerna.data.Graph
 import com.negk.lerna.ui.screens.home.HomeScreen
 import com.negk.lerna.ui.screens.GamesScreen
 import com.negk.lerna.ui.screens.TestsScreen
 import com.negk.lerna.ui.screens.ProfileScreen
 import com.negk.lerna.ui.theme.LernaTheme
 import com.negk.lerna.ui.components.Header
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+    companion object {
+        private const val TAG = "MainActivity"
+        private const val LERNA_APP_PREFS = "LernaApp"
+        private const val LAST_SYNC_VERSION_CODE_KEY = "last_sync_version_code"
+    }
+
     /**
      * Método de ciclo de vida onCreate.
      * Configura el tema, la navegación y la estructura principal de la app.
@@ -46,6 +57,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        Graph.provide(this)
+
+        checkForDataSync()
+
         setContent {
             LernaTheme {
                 val navController = rememberNavController()
@@ -114,6 +129,39 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Comprueba si la app ha sido actualizada y sincroniza los datos de los juegos si es necesario.
+     */
+    private fun checkForDataSync() {
+        val prefs = getSharedPreferences(LERNA_APP_PREFS, Context.MODE_PRIVATE)
+        // Se maneja la posible ClassCastException leyendo el valor como un tipo Number y convirtiéndolo a Long.
+        // Esto asegura la retrocompatibilidad si el valor fue guardado previamente como un Int.
+        val lastSyncValue = prefs.all[LAST_SYNC_VERSION_CODE_KEY]
+        val lastSyncVersionCode = (lastSyncValue as? Number)?.toLong() ?: 0L
+
+        try {
+            val packageInfo = packageManager.getPackageInfo(packageName, 0)
+            val currentVersionCode = packageInfo.longVersionCode
+
+            if (currentVersionCode > lastSyncVersionCode) {
+                lifecycleScope.launch {
+                    try {
+                    // Sincronizar datos en un hilo de fondo. Ya no se necesita el contexto aquí.
+                    Graph.gameRepository.syncGamesFromJson()
+
+                    // Actualizar la versión guardada tras una sincronización exitosa
+                    prefs.edit().putLong(LAST_SYNC_VERSION_CODE_KEY, currentVersionCode).apply()
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error during data sync", e)
+                    }
+                }
+            }
+        } catch (e: android.content.pm.PackageManager.NameNotFoundException) {
+            // Registrar el error si no se puede obtener la información del paquete.
+            Log.e(TAG, "Failed to get package info for data sync.", e)
         }
     }
 }

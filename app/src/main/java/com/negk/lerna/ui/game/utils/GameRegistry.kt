@@ -1,4 +1,4 @@
-package com.negk.lerna.data
+package com.negk.lerna.ui.game.utils
 
 import androidx.compose.runtime.Composable
 import com.negk.lerna.ui.game.memory.MemoryMatrixGame
